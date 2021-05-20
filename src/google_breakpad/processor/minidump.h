@@ -704,6 +704,31 @@ class MinidumpAssertion : public MinidumpStream {
   DISALLOW_COPY_AND_ASSIGN(MinidumpAssertion);
 };
 
+class MinidumpMessage : public MinidumpStream {
+ public:
+  virtual ~MinidumpMessage();
+
+  string message() const {
+    return valid_ ? message_ : "";
+  }
+
+  // Print a human-readable representation of the object to stdout.
+  void Print();
+
+ private:
+  friend class Minidump;
+
+  static const uint32_t kStreamType = MD_MESSAGE_STREAM;
+
+  explicit MinidumpMessage(Minidump* minidump);
+
+  bool Read(uint32_t expected_size) override;
+
+  string message_;
+
+  DISALLOW_COPY_AND_ASSIGN(MinidumpMessage);
+};
+
 
 // MinidumpSystemInfo wraps MDRawSystemInfo and provides information about
 // the system on which the minidump was generated.  See also MinidumpMiscInfo.
@@ -1192,6 +1217,7 @@ class Minidump {
   virtual MinidumpMemoryList* GetMemoryList();
   virtual MinidumpException* GetException();
   virtual MinidumpAssertion* GetAssertion();
+  virtual MinidumpMessage* GetMessage();
   virtual MinidumpSystemInfo* GetSystemInfo();
   virtual MinidumpUnloadedModuleList* GetUnloadedModuleList();
   virtual MinidumpMiscInfo* GetMiscInfo();

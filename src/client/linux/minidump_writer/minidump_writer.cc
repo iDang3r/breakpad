@@ -219,7 +219,7 @@ class MinidumpWriter {
   bool Dump() {
     // A minidump file contains a number of tagged streams. This is the number
     // of stream which we write.
-    unsigned kNumWriters = 13;
+    unsigned kNumWriters = 14;
 
     TypedMDRVA<MDRawDirectory> dir(&minidump_writer_);
     {
@@ -308,6 +308,11 @@ class MinidumpWriter {
       NullifyDirectoryEntry(&dirent);
     dir.CopyIndex(dir_index++, &dirent);
 
+    dirent.stream_type = MD_MESSAGE_STREAM;
+    if (!WriteFile(&dirent.location, "/tmp/breakpad_message.txt"))
+      NullifyDirectoryEntry(&dirent);
+    dir.CopyIndex(dir_index++, &dirent);
+    
     // If you add more directory entries, don't forget to update kNumWriters,
     // above.
 

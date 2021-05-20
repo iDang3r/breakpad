@@ -50,6 +50,7 @@ void ProcessState::Clear() {
   crash_reason_.clear();
   crash_address_ = 0;
   assertion_.clear();
+  message_.clear();
   requesting_thread_ = -1;
   for (vector<CallStack*>::const_iterator iterator = threads_.begin();
        iterator != threads_.end();

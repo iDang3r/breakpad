@@ -143,6 +143,8 @@ ProcessResult MinidumpProcessor::Process(
   // This will just return an empty string if it doesn't exist.
   process_state->assertion_ = GetAssertion(dump);
 
+  process_state->message_ = GetMessage(dump);
+
   MinidumpModuleList* module_list = dump->GetModuleList();
 
   // Put a copy of the module list into ProcessState object.  This is not
@@ -1793,6 +1795,11 @@ string MinidumpProcessor::GetAssertion(Minidump* dump) {
   }
 
   return assertion_string;
+}
+
+string MinidumpProcessor::GetMessage(Minidump* dump) {
+  MinidumpMessage* message = dump->GetMessage();
+  return message->message();
 }
 
 }  // namespace google_breakpad

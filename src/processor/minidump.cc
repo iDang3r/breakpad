@@ -3373,6 +3373,53 @@ void MinidumpAssertion::Print() {
 }
 
 //
+// MinidumpMessage
+//
+
+
+MinidumpMessage::MinidumpMessage(Minidump* minidump)
+    : MinidumpStream(minidump),
+      message_() {
+}
+
+
+MinidumpMessage::~MinidumpMessage() {
+}
+
+
+bool MinidumpMessage::Read(uint32_t expected_size) {
+  // Invalidate cached data.
+  valid_ = false;
+
+  char* message_str = new char[expected_size + 1];
+
+  if (!minidump_->ReadBytes(message_str, expected_size)) {
+    BPLOG(ERROR) << "MinidumpAssertion cannot read assertion";
+    return false;
+  }
+
+  message_str[expected_size] = '\0';
+  message_ = message_str;
+
+  delete [] message_str;
+
+  valid_ = true;
+  return true;
+}
+
+void MinidumpMessage::Print() {
+  if (!valid_) {
+    BPLOG(ERROR) << "MinidumpMessage cannot print invalid data";
+    return;
+  }
+
+  printf("MDMessage\n");
+  printf("  message = %s\n",
+         message_.c_str());
+  printf("\n");
+}
+
+//
 // MinidumpSystemInfo
 //
 
@@ -5337,6 +5384,10 @@ MinidumpAssertion* Minidump::GetAssertion() {
   return GetStream(&assertion);
 }
 
+MinidumpMessage* Minidump::GetMessage() {
+  MinidumpMessage* message;
+  return GetStream(&message);
+}
 
 MinidumpSystemInfo* Minidump::GetSystemInfo() {
   MinidumpSystemInfo* system_info;

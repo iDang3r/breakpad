@@ -332,6 +332,9 @@ typedef enum {
   MD_JAVASCRIPT_DATA_STREAM      = 20,
   MD_SYSTEM_MEMORY_INFO_STREAM   = 21,
   MD_PROCESS_VM_COUNTERS_STREAM  = 22,
+
+  MD_MESSAGE_STREAM              = 23,
+
   MD_LAST_RESERVED_STREAM        = 0x0000ffff,
 
   /* Breakpad extension types.  0x4767 = "Gg" */

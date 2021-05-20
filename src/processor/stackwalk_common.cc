@@ -843,6 +843,8 @@ void PrintProcessState(const ProcessState& process_state,
     printf("Process uptime: not available\n");
   }
 
+  printf("\n%s\n", process_state.message().c_str());
+
   // If the thread that requested the dump is known, print it first.
   int requesting_thread = process_state.requesting_thread();
   if (requesting_thread != -1) {

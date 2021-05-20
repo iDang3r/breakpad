@@ -125,6 +125,8 @@ class MinidumpProcessor {
   // does not exist or cannot be determined.
   static string GetAssertion(Minidump* dump);
 
+  static string GetMessage(Minidump* dump);
+
   void set_enable_objdump(bool enabled) { enable_objdump_ = enabled; }
 
  private:

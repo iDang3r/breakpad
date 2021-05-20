@@ -105,6 +105,7 @@ class ProcessState {
   string crash_reason() const { return crash_reason_; }
   uint64_t crash_address() const { return crash_address_; }
   string assertion() const { return assertion_; }
+  string message() const { return message_; }
   int requesting_thread() const { return requesting_thread_; }
   const ExceptionRecord* exception_record() const { return &exception_record_; }
   const vector<CallStack*>* threads() const { return &threads_; }
@@ -157,6 +158,9 @@ class ProcessState {
   // of that assertion, possibly including the file and line at which
   // it occurred.
   string assertion_;
+
+  // Got message from mile /tmp/breakpad_message.txt
+  string message_;
 
   // The index of the thread that requested a dump be written in the
   // threads vector.  If a dump was produced as a result of a crash, this
